@@ -5,7 +5,13 @@
 #include<time.h>
 #include<unistd.h>
 #include <sys/time.h>
- 
+
+void swap(int* A, int i, int j){
+  int k = A[i];
+  A[i] = A[j];
+  A[j] = k;
+}
+
 int timer(void)
 {
   struct timeval tv;
@@ -22,28 +28,45 @@ void print(char* s, int* array, int size, int id){
   printf("\n");
 }
 
-int permut(int* array, int begin, int end){
-  int pivot, left, right, tmp;
-  pivot = begin;
-  left = begin;
-  right = end;
-  while(left != right){
-    if(array[left] >= array[right]){
-      tmp = array[left];
-      array[left] = array[right];
-      array[right] = tmp;
-      pivot =  left+right - pivot;
-    }
-    if(pivot == left)
-      right --;
-    else
-      left++;
+//any pivot selection algorithm can be implemented here. Must return the pivot's index. For this assignment, we chose to use the median of three strategy, that is the pivot is the median of begin, end and the middle value of the interval.
+int choose_pivot(int* array, int begin, int end){
+  int tmp, middle = (begin+end)/2;
+  //return begin;
+  // printf("%d, %d, %d\n",array[begin], array[middle], array[end]);
+  if(array[begin] > array[middle]){
+    //since both begin and middle are used later, we need to swap them properly
+    tmp = begin;
+    begin = middle;
+    middle = tmp;
   }
-  return left;
+  if(array[begin] > array[end])
+    end = begin;
+  if(array[middle] > array[end])
+    middle = end;
+  //  printf("chosen: %d\n",array[middle]);
+  return middle;
+}
+
+int permut(int* array, int begin, int end){
+  int pivot;
+    //for this algorithm to work, the pivot must be the first element. So, we swap it with the first element
+  swap(array, choose_pivot(array, begin, end), begin);
+  pivot = begin;
+
+  while(begin != end){
+    if(array[begin] >= array[end]){
+      swap(array, begin,end);
+      pivot =  begin+end - pivot;
+    }
+    if(pivot == begin)
+      end --;
+    else
+      begin++;
+  }
+  return begin;
 }
 
 void serial_quicksort(int* array, int begin, int end){
-  int right,left;
   int index = permut(array, begin, end);
   if(begin < index - 1)
     serial_quicksort(array,begin, index - 1);
@@ -64,9 +87,8 @@ typedef struct{
   int id;
 }qsort_arg;
 
-int nb_threads;
 int size;
-int nb_step;
+int nb_steps;
 
 //the array to sort
 int* data;
@@ -76,7 +98,7 @@ void* quicksort(void* arg){
   int has_spawned = 0;
   pthread_t thread;
   //printf("Thread %d, step %d: %d -> %d\n",qarg->id,qarg->step,qarg->begin,qarg->end); 
-  if(qarg->step == nb_step){
+  if(qarg->step >= nb_steps){
     //    printf("Thread %d quicksort, step %d: %d -> %d\n",qarg->id,qarg->step,qarg->begin,qarg->end);
     //last step, each process sorts its part serially
     serial_quicksort(data, qarg->begin, qarg->end);
@@ -91,8 +113,9 @@ void* quicksort(void* arg){
       q_arg->end = qarg->end;
       if(pthread_create(&thread, NULL, quicksort,(void*)q_arg))
 	perror("Pthread_create");
-      else
+      else{
 	has_spawned = 1;
+      }
     }
     if(qarg->begin < index - 1){
       qarg->step++;
@@ -109,7 +132,7 @@ void* quicksort(void* arg){
 
 int main(int argc, char** argv){
 	if(argc != 3){
-		printf("Usage: ./quicksort size_of_array nb_threads\n");
+		printf("Usage: ./quicksort size_of_array max_steps\n");
 		exit(EXIT_FAILURE); 
 	}
      
@@ -118,20 +141,30 @@ int main(int argc, char** argv){
 	qsort_arg qarg;
 	pthread_t thread;
 	size = atoi(argv[1]);
-	nb_threads = atoi(argv[2]);
-	nb_step = (int)log2(nb_threads)+1; 
+	
+	if(size <= 0){
+	  printf("At least, give us some data to work with...\n");
+	  return EXIT_FAILURE;
+	}
+
+	nb_steps = atoi(argv[2]);
+	
+	if(nb_steps < 0){
+	  printf("A negative number of steps is impossible...\n");
+	  return EXIT_FAILURE;
+	} 
 
 	data = malloc(size*sizeof(int));
 	
 	init(data,size);
 	//print("main",data, size,-1);
 	
-	qarg.step = 1;
+	qarg.step = 0;
 	qarg.begin = 0;
 	qarg.end = size-1;
 
 	int time = timer();
-	
+
        	pthread_create(&thread,NULL,quicksort,(void*)&qarg);
 
 	pthread_join(thread,NULL);
