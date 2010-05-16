@@ -19,20 +19,9 @@ int timer(void)
   return (tv.tv_sec*1000000+tv.tv_usec);
 }
 
-void print(char* s, int* array, int size, int id){
-  int i;
-  //char * s = malloc(256*sizeof(char));
-  printf("Thread %d: %s ",id, s);
-  for(i=0;i<size; i++)
-    printf("%d ",array[i]);
-  printf("\n");
-}
-
 //any pivot selection algorithm can be implemented here. Must return the pivot's index. For this assignment, we chose to use the median of three strategy, that is the pivot is the median of begin, end and the middle value of the interval.
 int choose_pivot(int* array, int begin, int end){
   int tmp, middle = (begin+end)/2;
-  //return begin;
-  // printf("%d, %d, %d\n",array[begin], array[middle], array[end]);
   if(array[begin] > array[middle]){
     //since both begin and middle are used later, we need to swap them properly
     tmp = begin;
@@ -43,7 +32,6 @@ int choose_pivot(int* array, int begin, int end){
     end = begin;
   if(array[middle] > array[end])
     middle = end;
-  //  printf("chosen: %d\n",array[middle]);
   return middle;
 }
 
@@ -84,7 +72,6 @@ typedef struct{
   int step;
   int begin;
   int end;
-  int id;
 }qsort_arg;
 
 int size;
@@ -97,9 +84,7 @@ void* quicksort(void* arg){
   qsort_arg* qarg = (qsort_arg*)arg; 
   int has_spawned = 0;
   pthread_t thread;
-  //printf("Thread %d, step %d: %d -> %d\n",qarg->id,qarg->step,qarg->begin,qarg->end); 
   if(qarg->step >= nb_steps){
-    //    printf("Thread %d quicksort, step %d: %d -> %d\n",qarg->id,qarg->step,qarg->begin,qarg->end);
     //last step, each process sorts its part serially
     serial_quicksort(data, qarg->begin, qarg->end);
   }else{
@@ -125,7 +110,6 @@ void* quicksort(void* arg){
   }
   if(has_spawned)
     pthread_join(thread,NULL);
-  //  printf("Thread %d left, step %d: %d -> %d\n",qarg->id,qarg->step,qarg->begin,qarg->end);
   return;
 }
 
@@ -170,10 +154,10 @@ int main(int argc, char** argv){
 	pthread_join(thread,NULL);
 	
 	time = timer() - time;
-	printf("%f sec\n",(double)time/1000000.0);
+	printf("Time: %f\n",(double)time/1000000.0);
 	//print("main", data,size,-1);
 	
-	/* Check results, -1 implies data same as the previous element */
+	/* Checks result, not included in the time taken by the algorithm  */
 	for (i=0; i<size-1; i++)
 	  if (data[i]>data[i+1])
 	    printf("ERROR: %d (%d) > %d (%d)\n", data[i],i, data[i+1], i+1);
