@@ -1,0 +1,12 @@
+set title "Time needed using synchronize"
+set ylabel "Time (seconds)"
+set xlabel "Threads"
+set grid
+#set pointsize 2
+#set terminal postscript portrait enhanced
+#set term postscript eps enhanced
+#set output "graph.eps"
+plot "pic/data_synchro_time.dat" index 0:0 using 2:($3) ti "256x256" with linespoints,\
+"pic/data_synchro_time.dat" index 1 using 2:($3) with linespoints ti "512x512",\
+"pic/data_synchro_time.dat" index 2 using 2:($3) with linespoints ti "750x750"
+

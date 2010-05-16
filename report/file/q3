@@ -1,0 +1,40 @@
+Data -1, GlobData 1
+Data -1, GlobData 1
+Data -1, GlobData 1
+Data -1, GlobData 1
+Data -1, GlobData 1
+Thread 4, with LocData 1004
+Thread 4: Data -1, GlobData 1
+Thread 4: Data -1, GlobData 1
+Thread 4: Data -1, GlobData 1
+Thread 4: Data -1, GlobData 1
+Thread 4: Data 4, GlobData -4
+Thread 2, with LocData 1002
+Thread 2: Data -1, GlobData 1
+Thread 2: Data -1, GlobData 1
+Thread 2: Data 2, GlobData -2
+Thread 2: Data -1, GlobData 1
+Thread 2: Data 4, GlobData -4
+Thread 0, with LocData 1000
+Thread 0: Data 0, GlobData 0
+Thread 0: Data -1, GlobData 1
+Thread 0: Data 2, GlobData -2
+Thread 0: Data -1, GlobData 1
+Thread 0: Data 4, GlobData -4
+Thread 3, with LocData 1003
+Thread 3: Data 0, GlobData 0
+Thread 3: Data -1, GlobData 1
+Thread 3: Data 2, GlobData -2
+Thread 3: Data 3, GlobData -3
+Thread 3: Data 4, GlobData -4
+Thread 1, with LocData 1001
+Thread 1: Data 0, GlobData 0
+Thread 1: Data 1, GlobData -1
+Thread 1: Data 2, GlobData -2
+Thread 1: Data 3, GlobData -3
+Thread 1: Data 4, GlobData -4
+Data 0, GlobData 0
+Data 1, GlobData -1
+Data 2, GlobData -2
+Data 3, GlobData -3
+Data 4, GlobData -4

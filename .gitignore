@@ -1,0 +1,17 @@
+.DS_Store
+*.swp
+*.d
+*.dvi
+*.log
+*.ps
+*.fls
+*.out*
+*.aux*
+*.toc*
+*.o
+*.swp
+._*
+hello2
+helloworld
+join
+data

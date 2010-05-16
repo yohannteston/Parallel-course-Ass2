@@ -1,0 +1,11 @@
+set title "Speedup of both of the matrices multiplication programs"
+set ylabel "Speedup"
+set xlabel "Threads"
+set grid
+#set pointsize 2
+#set terminal postscript portrait enhanced
+#set term postscript eps enhanced
+#set output "graph.eps"
+plot "pic/matmul.dat" index 0:0 using 2:($3/$4) ti "Non optimized" with linespoints,\
+"pic/matmul.dat" index 1 using 2:($3/$4) with linespoints ti "Optimized"
+
