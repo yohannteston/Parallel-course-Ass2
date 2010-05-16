@@ -1,7 +1,0 @@
-\chapter{Introduction to Pthreads}
-
-\section{Mutex variables}
-
-If a mutex is not used to protect the access to the shared variable $sum$, the result will not be reliable. Indeed, race conditions will appear and modifications will then be lost. A race condition appear when several threads access the same memory space without protection. For example, a thread could read $sum$ in a register, modify it and be preempted just before writing it back. When this thread will be allocated the CPU again, it will then erase all modifications that could have happened meanwhile by storing its local value into the shared variable.
-
-Mutexes are then indispensable when it comes to multithreading.
