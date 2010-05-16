@@ -8,8 +8,13 @@
 
 	min_time = 10000000 ;
 
+<<<<<<< HEAD:bench_qs.rb
 	20.times {
 		out = `./quick_sort #{size} #{n}` 
+=======
+	10.times {
+		out = `enum1 #{n}` 
+>>>>>>> 6383e27601a052876c4ec12a4dde9350f8fb1c68:labPthreads/bench_enum1.rb
 		out_split = out.split " " ;
 		if(out_split[1].to_f < min_time)
 			min_time = out_split[1].to_f;
