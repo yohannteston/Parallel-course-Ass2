@@ -1,0 +1,15 @@
+set title "Quick sort's speedup"
+set ylabel "Speedup"
+set xlabel "Number of steps (so, 2^(number of steps) threads at most)"
+set grid
+#set pointsize 2
+#set terminal postscript portrait enhanced
+#set term postscript eps enhanced
+#set output "graph.eps"
+plot "pic/graph.dat" index 0:0 using 2:($3/$4) ti "100" with linespoints,\
+"pic/graph.dat" index 1:1 using 2:($3/$4) ti "1000" with linespoints,\
+"pic/graph.dat" index 2:2 using 2:($3/$4) ti "10000" with linespoints,\
+"pic/graph.dat" index 3:3 using 2:($3/$4) ti "100000" with linespoints,\
+"pic/graph.dat" index 4:4 using 2:($3/$4) ti "1000000" with linespoints,\
+"pic/graph.dat" index 5:5 using 2:($3/$4) ti "10000000" with linespoints,\
+"pic/graph.dat" index 6:6 using 2:($3/$4) ti "100000000" with linespoints
