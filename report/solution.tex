@@ -1,1 +1,90 @@
 \chapter{Solution method}
+
+\section{main()}
+
+Take the size of the array and the number of step (number of thread is $2^{step}$ at most):
+
+\begin{verbatim}
+check array size
+check number of step
+
+allocate the array
+fill the array with random data
+
+struct qsort_arg = arg
+arg.step = 0
+arg.begin = 0
+arg.end = size-1
+
+spawn the first thread (quicksort(arg) )
+
+join the thread
+
+check the result
+
+deallocate data
+\end{verbatim}
+
+\section{quicksort()}
+
+This function take a qsort\_arg structure in argument. This structure hold:
+\begin{itemize}
+  \item the beginning of the work area
+  \item the end of the work area
+  \item the actual working step
+\end{itemize}
+
+\begin{verbatim}
+if arg.step >= max_step
+    serial_quicksort (array, arg.begin, arg.end)
+
+else
+    index = permut(array, arg.begin, arg.end)
+    if arg.end > index + 1
+        struct qsort\_arg arg2
+        arg2.begin = index + 1
+        arg2.end = arg.end
+        arg2.step = arg.step + 1
+        spawn new thread (quicksort(arg2)
+
+    if arg.begin < index - 1
+        arg.step++
+        arg.end = index - 1
+        quicksort(arg)
+
+    if a thread was spawned
+        join this thread
+\end{verbatim}
+
+\section{permut()}
+
+This function permut elements of an array around a choosen pivot element. It take an array, the begin and the end for the work.
+
+\begin{verbatim}
+choose pivot
+
+while begin != end
+    if array[begin] >= array[end] 
+        swap(array, begin,end)
+        pivot =  begin+end - pivot
+	 
+    if pivot == begin
+        end --
+    else
+        begin++
+
+return begin
+\end{verbatim}
+
+\section{serial\_quicksort()}
+
+This function sort an array. It take the array and the beginning and the end for the work.
+
+\begin{verbatim}
+index = permut (array, begin, end)
+
+if begin < index - 1
+    serial_quicksort (array, begin, index - 1)
+if end > index + 1
+    serial_quicksort (array, index + 1, end)
+\end{verbatim}
