@@ -72,16 +72,21 @@ typedef struct{
   int step;
   int begin;
   int end;
+  int id;
 }qsort_arg;
 
 int size;
 int nb_steps;
 
+int gid = 0;
+pthread_mutex_t mut;
+
 //the array to sort
 int* data;
 
 void* quicksort(void* arg){
-  qsort_arg* qarg = (qsort_arg*)arg; 
+  qsort_arg* qarg = (qsort_arg*)arg;
+	printf("Thread %d, step %d: From %d to %d\n",qarg->id, qarg->step, qarg->begin, qarg->end);  
   int has_spawned = 0;
   pthread_t thread;
   if(qarg->step >= nb_steps){
@@ -96,6 +101,9 @@ void* quicksort(void* arg){
       q_arg->step = qarg->step+1;
       q_arg->begin = index + 1;
       q_arg->end = qarg->end;
+	pthread_mutex_lock(&mut);
+	q_arg->id = gid ++;
+	pthread_mutex_unlock(&mut);
       if(pthread_create(&thread, NULL, quicksort,(void*)q_arg))
 	perror("Pthread_create");
       else{
@@ -120,6 +128,8 @@ int main(int argc, char** argv){
 		exit(EXIT_FAILURE); 
 	}
      
+	pthread_mutex_init(&mut, NULL);
+
 	srand(time(NULL));
 	int i;
 	qsort_arg qarg;
@@ -146,7 +156,7 @@ int main(int argc, char** argv){
 	qarg.step = 0;
 	qarg.begin = 0;
 	qarg.end = size-1;
-
+	qarg.id = gid ++;
 	int time = timer();
 
        	pthread_create(&thread,NULL,quicksort,(void*)&qarg);
@@ -163,6 +173,7 @@ int main(int argc, char** argv){
 	    printf("ERROR: %d (%d) > %d (%d)\n", data[i],i, data[i+1], i+1);
 
 	free(data); 
+	pthread_mutex_destroy(&mut);
 	pthread_exit(NULL);
 }
 	
