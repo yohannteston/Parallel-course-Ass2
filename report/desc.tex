@@ -1,0 +1,12 @@
+\chapter{Problem description}
+
+The goal of this assignement is to set up a parallel versions of the quicksort algorithm.
+
+The general algorithm for that is:
+\begin{itemize}
+  \item Select the pivot element
+  \item Divide the data into two sets (lower and greater than the pivot)
+  \item Recursively call the Quick-sort 
+\end{itemize}
+
+We choose to parallelize this algorithm by spawning a new thread each time the data are divided.
