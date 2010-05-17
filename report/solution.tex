@@ -1,8 +1,18 @@
 \chapter{Solution method}
 
+The algorithm works as follows:
+\begin{itemize}
+	\item if the current step is the last one, sort data locally using a serial quicksort. Otherwise, choose a pivot element.
+	\item partition the data into two sets (smaller/greater than the pivot)
+	\item spawn a new thread to sort the set with greater elements.
+	\item call parallel quicksort recursively to sort the set with smaller elements.
+\end{itemize}
+
+To do so, we use the following functions.
+
 \section{main()}
 
-Take the size of the array and the number of step (number of thread is $2^{step}$ at most):
+Take the size of the array and the number of steps. The maximum number of threads our algorithm can create is then $2^{step}$.
 
 \begin{verbatim}
 check array size
@@ -27,7 +37,7 @@ deallocate data
 
 \section{quicksort()}
 
-This function take a qsort\_arg structure in argument. This structure hold:
+This function takes a qsort\_arg structure in argument. This structure holds:
 \begin{itemize}
   \item the beginning of the work area
   \item the end of the work area
@@ -58,7 +68,7 @@ else
 
 \section{permut()}
 
-This function permut elements of an array around a choosen pivot element. It take an array, the begin and the end for the work.
+This function permutes elements of an array around a chosen pivot element. It takes an array and the bounds of the area to treat.
 
 \begin{verbatim}
 choose pivot
@@ -78,7 +88,7 @@ return begin
 
 \section{serial\_quicksort()}
 
-This function sort an array. It take the array and the beginning and the end for the work.
+This function sorts an array. It takes the array and the bounds of the area to treat.
 
 \begin{verbatim}
 index = permut (array, begin, end)

@@ -1,7 +1,7 @@
 \section{Discussion}
 
-As we can see there is no speedup with array size less than $10000$ elements. And quickly the threads overhead create a deacrease of the speedup.\\
+As we can see there is no speedup with array size less than $10000$ elements because this amount of data is too small to compensate the overheads created by the use of threads.\\
 
-For array of $10000$ and $100000$ elements we see a improvement at the begining but after a certain nomber of thread ($8$ for $10000$ and $32$ for $100000$) we start to see the effect of the thread overhead.
+For arrays of $10000$ and $100000$ elements, there is an improvement at the begining but after a certain number of threads ($8$ for $10000$ and $32$ for $100000$) the speedup starts to decrease, due to the effects of the overheads.\\
 
-With greater value we don't see any deacrease (max $256$ threads) but we see that the speedup follow a logarithmic pattern.
+With arrays bigger than $100000$ elements, the speedup keeps increasing but we see that the speedup follow a logarithmic pattern. It is easy to conjecture that the speedup will increase slowly as we add new threads up to a certain point where there will be too many threads. At that moment, the speedup will likely start to decrease.

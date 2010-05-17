@@ -1,6 +1,6 @@
 set title "Quick sort's speedup"
 set ylabel "Speedup"
-set xlabel "Number of steps (so, 2^(number of steps) threads at most)"
+set xlabel "Number of steps"
 set grid
 #set pointsize 2
 #set terminal postscript portrait enhanced

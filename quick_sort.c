@@ -15,14 +15,14 @@ typedef struct{
 
 /* size of the data */
 int size;
-/* maximum step to do */
+/* maximum number of steps */
 int nb_steps;
 
 /* the array to sort */
 int* data;
 
 /*
- * Function to swap two element
+ * Function to swap two elements
  */
 void swap(int* A, int i, int j){
   int k = A[i];
@@ -132,7 +132,9 @@ void* quicksort(void* arg){
   }
 
   else {
-	 //splits the data in two set according to the pivot and spawns a new thread to sort one of the set
+	 /*splits the data in two sets according to the pivot 
+		and spawns a new thread to sort one of the set
+	 */
 	 qsort_arg* q_arg;
 	 int index = permut(data, qarg->begin, qarg->end);
 
