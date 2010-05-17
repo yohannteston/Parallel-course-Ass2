@@ -1,4 +1,4 @@
-set title "Speedup in Gram-Schmidt orthogonalization 2"
+set title "Quick sort's speedup"
 set ylabel "Speedup"
 set xlabel "Threads"
 set grid
