@@ -1,1 +1,7 @@
+\section{Discussion}
 
+As we can see there is no speedup with array size less than $10000$ elements. And quickly the threads overhead create a deacrease of the speedup.\\
+
+For array of $10000$ and $100000$ elements we see a improvement at the begining but after a certain nomber of thread ($8$ for $10000$ and $32$ for $100000$) we start to see the effect of the thread overhead.
+
+With greater value we don't see any deacrease (max $256$ threads) but we see that the speedup follow a logarithmic pattern.
